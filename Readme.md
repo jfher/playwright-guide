@@ -149,3 +149,20 @@ In case we want to optimize the best configuration balance between CPU and RAM w
             screenshot: 'only-on-failure',
             video: 'retain-on-failure',
         });
+
+### Docker commands
+
+Build image
+
+docker build -t playwright-tests .
+
+Run tests
+
+docker run --rm -it --ipc=host playwright-tests
+
+By default, Playwright generates an HTML report in the playwright-report directory.
+To access this report (or any other artifacts such as screenshots or videos) generated inside the container, you need to mount a volume.
+Modify your docker run command to include the -v flag:
+
+docker run --rm -v "$(pwd)/playwright-report:/app/playwright-report"
+playwright-tests

@@ -14,18 +14,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: lts/*
 
-      - name: Install dependencies
-        run: npm ci
+      # - name: Install dependencies
+      #   run: npm ci
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      # - name: Install Playwright Browsers
+      #   run: npx playwright install --with-deps
       
-      - name: Run Playwright tests
-        run: npx playwright test
+      # - name: Run Playwright tests
+      #   run: npx playwright test
+
+      - name: Build Docker image
+        run: docker build -t playwright-tests .
+
+      - name: Run Playwright tests in Docker
+        run: docker run --rm -v "${{ github.workspace }}/playwrightreport:/app/playwright-report" playwright-tests
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
